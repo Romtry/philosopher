@@ -1,0 +1,6 @@
+obj
+so_long
+*.swo
+*.swp
+*.out
+.vscode

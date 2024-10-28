@@ -6,15 +6,53 @@
 /*   By: rothiery <rothiery@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 13:46:58 by rothiery          #+#    #+#             */
-/*   Updated: 2024/10/10 14:58:20 by rothiery         ###   ########.fr       */
+/*   Updated: 2024/10/28 12:14:14 by rothiery         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes.h"
 
+void	free_max(t_liste *liste)
+{
+	if (liste->p)
+		free(liste->p);
+}
+
 void	print_error(unsigned int n)
 {
 	if (n == 0)
-		write(1, "wrong args ./philosopher n_of_philo t_to_die t_to_eat t_to_sleep n_of_t_each_philo_must_eat\n", 128);
+		write(1, "wrong args ./philosopher n_of_philo t_to_die t_to_eat t_to_sleep (n_of_t_each_philo_must_eat)\n", 94);
+	else if (n == 1)
+		write(1, "wrong args args n_of_philo t_to_die t_to_eat t_to_sleep (n_of_t_each_philo_must_eat) must be higher than 0\n", 107);
 	exit(1);
+}
+
+static int	atoirep(const char *nptr, int i)
+{
+	unsigned int	rep;
+
+	rep = 0;
+	while (nptr[i] >= '0' && nptr[i] <= '9')
+	{
+		rep = (rep * 10) + (nptr[i] - 48);
+		i++;
+	}
+	return (rep);
+}
+
+int	ft_uns_atoi(const char *nptr)
+{
+	int	i;
+
+	i = 0;
+	while (nptr[i] == ' ' || (nptr[i] >= '\t' && nptr[i] <= '\r'))
+		i++;
+	if (nptr[i] == '-')
+		print_error(1);
+	else if (nptr[i] == '+')
+		i++;
+	if (nptr[i] < '0' || nptr[i] > '9')
+		return (0);
+	else
+		return (atoirep(nptr, i));
 }

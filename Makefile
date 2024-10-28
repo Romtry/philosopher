@@ -6,18 +6,18 @@
 #    By: rothiery <rothiery@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/10 13:44:10 by rothiery          #+#    #+#              #
-#    Updated: 2024/10/10 13:46:21 by rothiery         ###   ########.fr        #
+#    Updated: 2024/10/11 13:15:25 by rothiery         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME=	philosopher
 
-SRC= 	src/philosopher.c	\
+SRC= 	src/philosopher.c	src/philo_utils.c	src/philo_thread.c\
 
 OFILES= ${SRC:%.c=obj/%.o}
 
 CC= 	cc
-CFLAGS= -Wall -Wextra -Werror -fsanitize=address -g3 -I incldues
+CFLAGS= -Wall -Wextra -Werror -I includes -fsanitize=address -g3 
 
 RESET = \033[0m
 GRAS = \033[1m
@@ -49,7 +49,7 @@ ${NAME}:		${OFILES}
 obj/%.o:%.c
 	@mkdir -p obj/$(dir $<)
 	@${eval FICH_COUNT = ${shell expr ${FICH_COUNT} + 1}}
-	@${CC} ${CFLAGS} -c -I . $< -o $@
+	@${CC} ${CFLAGS} -c $< -o $@
 	@file_name=$(notdir $<) && \
 	echo " ${GRAS}${RED}-> COMPILATION EN COURS${RESET}${GRAS}${GREEN}${RESET}" && \
 	printf " ${RED}${GRAS}[${GREEN}%-.${BAR}s${DARK_RED}%-.${REST}s${RED}] [%d/%d (%d%%)] ${GREEN}%s  ✓                         ${DEF_COLOR}" "-----------------------" "-----------------------" ${FICH_COUNT} ${NBR_TOT_FICHIER} ${NBR_COMPILER} $${file_name} && \
