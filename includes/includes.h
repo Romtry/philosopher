@@ -23,9 +23,9 @@ struct s_philo
 {
 	pthread_t		thread;
 	unsigned int	id;
-	unsigned int	ctd;
-	pthread_mutex_t	forkl;
-	pthread_mutex_t	forkr;
+	unsigned int	last_t_eat;
+	unsigned int	forkl;
+	unsigned int	forkr;
 	unsigned int	eaten;
 };
 
@@ -35,7 +35,10 @@ typedef struct s_liste
 	unsigned int	t_t_die;
 	unsigned int	t_eat;
 	unsigned int	t_sleep;
-	unsigned int	n_m_eat;
+	unsigned int	n_must_eat;
+	unsigned int	f_in_table;
+	unsigned int	time_start;
+	pthread_mutex_t	lock;
 	struct s_philo	*p;
 } t_liste;
 
