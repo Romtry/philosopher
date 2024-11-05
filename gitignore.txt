@@ -1,0 +1,6 @@
+obj
+philosopher
+*.swo
+*.swp
+*.out
+.vscode

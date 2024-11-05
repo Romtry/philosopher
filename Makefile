@@ -12,13 +12,14 @@
 
 NAME=	philosopher
 
-SRC= 	src/philosopher.c	src/philo_utils.c	src/philo_thread.c\
+SRC= 	src/philosopher.c	src/philo_utils.c	src/philo_thread.c	\
+		src/ft_printf/ft_functions.c	src/ft_printf/ft_hex.c		\
+		src/ft_printf/ft_printf.c	src/ft_printf/ft_utils.c		\
 
 OFILES= ${SRC:%.c=obj/%.o}
 
 CC= 	cc
-CFLAGS= -Wall -Wextra -Werror -I includes -fsanitize=address -g3 
-
+CFLAGS= -Wall -Wextra -Werror -fsanitize=address -g3 -I includes
 RESET = \033[0m
 GRAS = \033[1m
 ITALIQUE = \033[3m
@@ -33,7 +34,7 @@ DARK_RED = \033[38;5;88m
 GREEN = \033[38;5;85m
 
 #change value with number of src files !
-NBR_TOT_FICHIER = 10
+NBR_TOT_FICHIER = 12
 
 FICH_COUNT = 0
 NBR_COMPILER = ${shell expr 100 \* ${FICH_COUNT} / ${NBR_TOT_FICHIER}}
@@ -43,8 +44,8 @@ REST = ${shell expr 23 - ${BAR}}
 all:	${NAME}
 
 ${NAME}:		${OFILES}
-		@${CC} ${CFLAGS} ${OFILES} -o ${NAME}
-		@echo "\n\n${GREEN}[✓] - ${_GREEN}${NAME}${GREEN} Successfully Compiled!${RESET}"
+	@${CC} ${CFLAGS} ${OFILES} -o ${NAME}
+	@echo "\n\n${GREEN}[✓] - ${_GREEN}${NAME}${GREEN} Successfully Compiled!${RESET}"
 
 obj/%.o:%.c
 	@mkdir -p obj/$(dir $<)

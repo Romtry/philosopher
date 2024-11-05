@@ -12,35 +12,33 @@
 
 #include "includes.h"
 
-void liste_init(t_liste *liste, char **argv)
+void global_init(t_global *global, char **argv)
 {
-	liste->n_philo = ft_uns_atoi(argv[1]);
-	liste->t_t_die = ft_uns_atoi(argv[2]);
-	liste->t_eat = ft_uns_atoi(argv[3]);
-	liste->t_sleep = ft_uns_atoi(argv[4]);
-	liste->n_must_eat = ft_uns_atoi(argv[5]);
-	// liste->p.fork = malloc(sizeof(unsigned int) * (liste->n_philo + 1));
-	// liste->p.fork[0] = liste->n_philo;
-	// liste->p.eaten = 0;
+	global->table.n_philo = ft_uns_atoi(argv[1]);
+	global->table.t_t_die = ft_uns_atoi(argv[2]);
+	global->table.t_eat = ft_uns_atoi(argv[3]);
+	global->table.t_sleep = ft_uns_atoi(argv[4]);
+	if (argv[5])
+		global->table.n_must_eat = ft_uns_atoi(argv[5]);
 }
 
-void parsing(int argc, char **argv, t_liste *liste)
+void parsing(int argc, char **argv, t_global *global)
 {
 	if (argc != 5 && argc != 6)
 		print_error(0);
-	liste_init(liste, argv);
-	if (liste->n_philo == 0 || liste->t_t_die == 0 || liste->t_eat == 0 ||
-		liste->t_sleep == 0 || liste->n_must_eat == 0)
+	global_init(global, argv);
+	if (global->table.n_philo == 0 || global->table.t_t_die == 0 || global->table.t_eat == 0 ||
+		global->table.t_sleep == 0 || global->table.n_must_eat == 0)
 		print_error(1);
 }
 
 int main(int argc, char **argv)
 {
-	t_liste liste;
+	t_global global;
 
-	parsing(argc, argv, &liste);
-	write(1, "input ok !\n", 11);
-	printf("%d, %d, %d, %d, %d\n", liste.n_philo, liste.t_t_die, liste.t_eat, liste.t_sleep, liste.n_must_eat);
-	philo_init(&liste);
-	free_max(&liste);
+	parsing(argc, argv, &global);
+	// write(1, "input ok !\n", 11);
+	// ft_printf("%d, %d, %d, %d, %d\n", global.table.n_philo, global.table.t_t_die, global.table.t_eat, global.table.t_sleep, global.table.n_must_eat);
+	philo_init(&global);
+	free_max(&global);
 }

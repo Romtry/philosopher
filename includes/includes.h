@@ -15,21 +15,12 @@
 
 # include <unistd.h>
 # include <stdlib.h>
-# include <stdio.h>
 # include <pthread.h>
+# include <stdio.h>
 # include <sys/time.h>
+# include "ft_printf.h"
 
-struct s_philo
-{
-	pthread_t		thread;
-	unsigned int	id;
-	unsigned int	last_t_eat;
-	unsigned int	forkl;
-	unsigned int	forkr;
-	unsigned int	eaten;
-};
-
-typedef struct s_liste
+typedef struct s_table
 {
 	unsigned int	n_philo;
 	unsigned int	t_t_die;
@@ -37,14 +28,31 @@ typedef struct s_liste
 	unsigned int	t_sleep;
 	unsigned int	n_must_eat;
 	unsigned int	f_in_table;
-	unsigned int	time_start;
+	unsigned long	time_start;
 	pthread_mutex_t	lock;
-	struct s_philo	*p;
-} t_liste;
+} t_table;
 
-void	free_max(t_liste *liste);
+typedef struct s_philo
+{
+	pthread_t		thread;
+	unsigned int	id;
+	unsigned int	last_t_eat;
+	pthread_mutex_t	forkl;
+	pthread_mutex_t	*forkr;
+	unsigned int	eaten;
+	struct s_table	table;
+} t_philo;
+
+typedef struct s_global
+{
+	struct s_philo	*p;
+	struct s_table	table;
+} t_global;
+
+unsigned int	ft_abs(int n);
+void	free_max(t_global *global);
 void	print_error(unsigned int n);
 int		ft_uns_atoi(const char *nptr);
-void	philo_init(t_liste *liste);
+void	philo_init(t_global *global);
 
 #endif

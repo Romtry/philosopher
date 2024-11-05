@@ -12,10 +12,17 @@
 
 #include "includes.h"
 
-void	free_max(t_liste *liste)
+unsigned int	ft_abs(int n)
 {
-	if (liste->p)
-		free(liste->p);
+	if (n < 0)
+		n = -n;
+	return (n);
+}
+
+void	free_max(t_global *global)
+{
+	if (global->p)
+		free(global->p);
 }
 
 void	print_error(unsigned int n)
