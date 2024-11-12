@@ -41,17 +41,35 @@ void	ft_usleep(unsigned long n)
 	}
 }
 
+int	end(t_philo *p)
+{
+	if 	 (get_time() - p->last_eat > p->table.t_t_die
+		|| p->eaten > p->table.n_must_eat || p->is_dead != 0)
+	{
+		if (p->eaten >= p->table.t_eat)
+			printf("%lu %u has eaten %u times", (get_time() - p->table.time_start), p->id, p->table.t_eat);
+		else
+			printf("%lu %u is dead\n", (get_time() - p->table.time_start), p->id);
+		return(1);
+	}
+	return(0);
+}
+
 void *life_style(void *ptr)
 {
 	t_philo	*p;
 
 	p = (t_philo *)ptr;
-	p->last_t_eat = 0;
+	p->last_eat = p->table.time_start;
 	p->eaten = 0;
+	if (p->table.n_philo == 1)
+	{
+		printf("%lu %u has taken a fork\n", (get_time() - p->table.time_start), p->id);
+		ft_usleep(p->table.t_t_die);
+		end(p);
+	}
 	if(p->id % 2 == 0)
-		ft_usleep((p->table.t_eat * 1000) + get_time());
-	//  (p->last_t_eat - p->table.time_start < p->table.t_t_die
-	// 	&& p->eaten < p->table.n_must_eat)
+		ft_usleep((p->table.t_eat) + get_time());
 	while(1)
 	{
 		pthread_mutex_lock(&p->forkl);
@@ -61,19 +79,51 @@ void *life_style(void *ptr)
 		printf("%lu %u is eating\n", (get_time() - p->table.time_start), p->id);
 		ft_usleep(p->table.t_eat + get_time());
 		p->eaten++;
-		printf("%lu %u is sleeping\n", (get_time() - p->table.time_start), p->id);
-		ft_usleep((p->table.t_sleep) + get_time());
-		printf("%lu %u is thinking\n", (get_time() - p->table.time_start), p->id);
-		ft_usleep(ft_abs(p->table.t_eat - p->table.t_sleep) + get_time());
+		p->last_eat = get_time();
 		pthread_mutex_unlock(&p->forkl);
 		pthread_mutex_unlock(p->forkr);
+		if (end(p) == 1)
+			break;
+		printf("%lu %u is sleeping\n", (get_time() - p->table.time_start), p->id);
+		ft_usleep((p->table.t_sleep) + get_time());
+		if (end(p) == 1)
+			break;
+		printf("%lu %u is thinking\n", (get_time() - p->table.time_start), p->id);
+		ft_usleep(ft_abs(p->table.t_eat - p->table.t_sleep) + get_time());
+		if (end(p) == 1)
+			break;
+	}
+	return (NULL);
+}
+
+void	*death(void *ptr)
+{
+	unsigned int	i;
+	t_global	*global;
+
+	global = (t_global *)ptr;
+	i = 0;
+	while(1)
+	{
+		if (i == global->table.n_philo)
+			i = 0;
+		if (global->p[i].is_dead == 1)
+			break;
+		i++;
+	}
+	i = 0;
+	while (i < global->table.n_philo)
+	{
+		global->p[i].is_dead = 1;
+		i++;
 	}
 	return (NULL);
 }
 
 void philo_init(t_global *global)
 {
-	unsigned long i;
+	unsigned long	i;
+	pthread_t		death_t;
 
 	i = 0;
 	global->p = malloc(sizeof(struct s_philo) * global->table.n_philo);
@@ -92,6 +142,8 @@ void philo_init(t_global *global)
 		i++;
 	}
 	i = 0;
+	pthread_create(&death_t, NULL, &death, &global);
+	pthread_join(death_t, NULL);
 	while (i < global->table.n_philo)
 	{
 		pthread_create(&global->p[i].thread, NULL, &life_style, &global->p[i]);

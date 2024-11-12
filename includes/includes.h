@@ -18,7 +18,6 @@
 # include <pthread.h>
 # include <stdio.h>
 # include <sys/time.h>
-# include "ft_printf.h"
 
 typedef struct s_table
 {
@@ -35,8 +34,9 @@ typedef struct s_table
 typedef struct s_philo
 {
 	pthread_t		thread;
+	unsigned int	is_dead;
 	unsigned int	id;
-	unsigned int	last_t_eat;
+	unsigned long	last_eat;
 	pthread_mutex_t	forkl;
 	pthread_mutex_t	*forkr;
 	unsigned int	eaten;
@@ -50,9 +50,9 @@ typedef struct s_global
 } t_global;
 
 unsigned int	ft_abs(int n);
-void	free_max(t_global *global);
-void	print_error(unsigned int n);
-int		ft_uns_atoi(const char *nptr);
-void	philo_init(t_global *global);
+void			free_max(t_global *global);
+void			print_error(unsigned int n);
+int				ft_uns_atoi(const char *nptr);
+void			philo_init(t_global *global);
 
 #endif

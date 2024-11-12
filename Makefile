@@ -13,8 +13,6 @@
 NAME=	philosopher
 
 SRC= 	src/philosopher.c	src/philo_utils.c	src/philo_thread.c	\
-		src/ft_printf/ft_functions.c	src/ft_printf/ft_hex.c		\
-		src/ft_printf/ft_printf.c	src/ft_printf/ft_utils.c		\
 
 OFILES= ${SRC:%.c=obj/%.o}
 
