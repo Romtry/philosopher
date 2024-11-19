@@ -6,18 +6,19 @@
 #    By: rothiery <rothiery@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/10 13:44:10 by rothiery          #+#    #+#              #
-#    Updated: 2024/10/11 13:15:25 by rothiery         ###   ########.fr        #
+#    Updated: 2024/11/19 11:59:35 by rothiery         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME=	philosopher
 
-SRC= 	src/philosopher.c	src/philo_utils.c	src/philo_thread.c	\
+SRC= 	src/main.c	src/philo_utils.c	src/philo_thread.c		\
+		src/init.c	src/verif_thread.c							\
 
 OFILES= ${SRC:%.c=obj/%.o}
 
 CC= 	cc
-CFLAGS= -Wall -Wextra -Werror -fsanitize=address -g3 -I includes
+CFLAGS= -Wall -Wextra -Werror -I includes
 RESET = \033[0m
 GRAS = \033[1m
 ITALIQUE = \033[3m

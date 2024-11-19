@@ -6,7 +6,7 @@
 /*   By: rothiery <rothiery@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 13:46:58 by rothiery          #+#    #+#             */
-/*   Updated: 2024/10/28 12:14:14 by rothiery         ###   ########.fr       */
+/*   Updated: 2024/11/19 12:10:12 by rothiery         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,14 @@ unsigned int	ft_abs(int n)
 	return (n);
 }
 
-void	free_max(t_global *global)
-{
-	if (global->p)
-		free(global->p);
-}
-
 void	print_error(unsigned int n)
 {
 	if (n == 0)
 		write(1, "wrong args ./philosopher n_of_philo t_to_die t_to_eat t_to_sleep (n_of_t_each_philo_must_eat)\n", 94);
 	else if (n == 1)
 		write(1, "wrong args args n_of_philo t_to_die t_to_eat t_to_sleep (n_of_t_each_philo_must_eat) must be higher than 0\n", 107);
+	else if (n == 2)
+		write(1, "need less than 200 philo\n", 25);
 	exit(1);
 }
 
@@ -62,4 +58,30 @@ int	ft_uns_atoi(const char *nptr)
 		return (0);
 	else
 		return (atoirep(nptr, i));
+}
+
+unsigned long	get_time(void)
+{
+	struct timeval	time;
+	unsigned long	sec;
+	unsigned long	nano;
+
+	gettimeofday(&time, NULL);
+	sec = time.tv_sec;
+	nano = time.tv_usec;
+	return((sec * 1000) + (nano / 1000));
+}
+
+void	ft_usleep(unsigned long n)
+{
+	unsigned long	i;
+
+	i = 0;
+	
+	while(n > get_time())
+	{
+		usleep(50);
+		if (i == 10)
+			exit(1);
+	}
 }

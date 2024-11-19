@@ -6,7 +6,7 @@
 /*   By: rothiery <rothiery@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 13:51:37 by rothiery          #+#    #+#             */
-/*   Updated: 2024/10/28 14:14:45 by rothiery         ###   ########.fr       */
+/*   Updated: 2024/11/19 11:59:19 by rothiery         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ typedef struct s_philo
 
 typedef struct s_global
 {
-	struct s_philo	*p;
+	struct s_philo	p[200];
 	struct s_table	table;
 } t_global;
 
@@ -53,6 +53,12 @@ unsigned int	ft_abs(int n);
 void			free_max(t_global *global);
 void			print_error(unsigned int n);
 int				ft_uns_atoi(const char *nptr);
-void			philo_init(t_global *global);
+void			thread_init(t_global *global);
+void			ft_usleep(unsigned long n);
+unsigned long	get_time(void);
+void			*death(void *ptr);
+void 			*life_style(void *ptr);
+int				end(t_philo *p);
+void			args_to_global(t_global *global, char **argv);
 
 #endif
