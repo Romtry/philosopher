@@ -6,7 +6,7 @@
 #    By: rothiery <rothiery@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/10 13:44:10 by rothiery          #+#    #+#              #
-#    Updated: 2024/11/19 11:59:35 by rothiery         ###   ########.fr        #
+#    Updated: 2024/11/21 15:34:35 by rothiery         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -68,4 +68,10 @@ fclean:	clean
 
 re:	fclean all
 
+testos : re
+	rm -rf ${NAME}.log
+	./${NAME} 5 1000 100 100 20 > ${NAME}.log
+# 	./${NAME} args > ${NAME}.log
+
 .PHONY:		all bonus clean fclean re
+
