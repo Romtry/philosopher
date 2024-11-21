@@ -6,7 +6,7 @@
 #    By: rothiery <rothiery@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/10 13:44:10 by rothiery          #+#    #+#              #
-#    Updated: 2024/11/21 15:34:35 by rothiery         ###   ########.fr        #
+#    Updated: 2024/11/21 15:58:07 by rothiery         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ DARK_RED = \033[38;5;88m
 GREEN = \033[38;5;85m
 
 #change value with number of src files !
-NBR_TOT_FICHIER = 12
+NBR_TOT_FICHIER = 5
 
 FICH_COUNT = 0
 NBR_COMPILER = ${shell expr 100 \* ${FICH_COUNT} / ${NBR_TOT_FICHIER}}
@@ -58,6 +58,7 @@ obj/%.o:%.c
 
 clean:
 	@rm -rf obj
+	@rm -f ${NAME}.log
 	@echo "${ORANGE}${GRAS}\tNETTOYAGE${RESET}"
 	@echo "${RED}${ITALIQUE} -les fichiers sont supprimés${RESET}"
 
@@ -69,8 +70,8 @@ fclean:	clean
 re:	fclean all
 
 testos : re
-	rm -rf ${NAME}.log
-	./${NAME} 5 1000 100 100 20 > ${NAME}.log
+	@rm -rf ${NAME}.log
+	@./${NAME} 5 1000 100 100 20 > ${NAME}.log
 # 	./${NAME} args > ${NAME}.log
 
 .PHONY:		all bonus clean fclean re
