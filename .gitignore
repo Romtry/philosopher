@@ -4,3 +4,4 @@ philosopher
 *.swp
 *.out
 .vscode
+philosopher.log
