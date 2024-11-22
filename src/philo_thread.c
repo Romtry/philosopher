@@ -6,25 +6,32 @@
 /*   By: rothiery <rothiery@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 13:02:50 by rothiery          #+#    #+#             */
-/*   Updated: 2024/11/21 15:44:42 by rothiery         ###   ########.fr       */
+/*   Updated: 2024/11/22 13:25:04 by rothiery         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes.h"
 
-unsigned int	one_philo(t_philo *p)
+void	*one_philo(t_philo *p)
 {
+	printf(FORK, (get_time() - p->table->time_start), p->id);
+	ft_usleep(get_time() + p->table->t_t_die, p);
+	printf("%lu %u is dead\n", (get_time() - p->table->time_start), p->id);
+	return (NULL);
+}
+
+void	mutex_fork2(t_philo *p)
+{
+	pthread_mutex_lock(p->forkr);
 	pthread_mutex_lock(&p->table->lock);
-	if (p->table->n_philo == 1)
-	{
+	if (p->table->end == 0)
 		printf(FORK, (get_time() - p->table->time_start), p->id);
-		ft_usleep(get_time() + p->table->t_t_die, p);
-		printf("%lu %u is dead\n", (get_time() - p->table->time_start), p->id);
-		pthread_mutex_unlock(&p->table->lock);
-		return (1);
-	}
 	pthread_mutex_unlock(&p->table->lock);
-	return (0);
+	pthread_mutex_lock(&p->forkl);
+	pthread_mutex_lock(&p->table->lock);
+	if (p->table->end == 0)
+		printf(FORK, (get_time() - p->table->time_start), p->id);
+	pthread_mutex_unlock(&p->table->lock);
 }
 
 void	mutex_fork_in_order(t_philo *p)
@@ -32,35 +39,32 @@ void	mutex_fork_in_order(t_philo *p)
 	if (&p->forkl < p->forkr)
 	{
 		pthread_mutex_lock(&p->forkl);
+		pthread_mutex_lock(&p->table->lock);
+		if (p->table->end == 0)
+			printf(FORK, (get_time() - p->table->time_start), p->id);
+		pthread_mutex_unlock(&p->table->lock);
 		pthread_mutex_lock(p->forkr);
+		pthread_mutex_lock(&p->table->lock);
+		if (p->table->end == 0)
+			printf(FORK, (get_time() - p->table->time_start), p->id);
+		pthread_mutex_unlock(&p->table->lock);
 	}
 	else
-	{
-		pthread_mutex_lock(p->forkr);
-		pthread_mutex_lock(&p->forkl);
-	}
+		mutex_fork2(p);
 }
 
-void	philo_eating(t_philo *p)
+void	philo_eating_sleeping(t_philo *p)
 {
 	mutex_fork_in_order(p);
 	pthread_mutex_lock(&p->table->lock);
 	if (p->table->end == 0)
-	{
-		printf(FORK, (get_time() - p->table->time_start), p->id);
-		printf(FORK, (get_time() - p->table->time_start), p->id);
 		printf(EAT, (get_time() - p->table->time_start), p->id);
-	}
 	p->last_eat = get_time();
 	p->eaten++;
 	pthread_mutex_unlock(&p->table->lock);
 	ft_usleep(p->table->t_eat + get_time(), p);
 	pthread_mutex_unlock(&p->forkl);
 	pthread_mutex_unlock(p->forkr);
-}
-
-void	philo_sleeping(t_philo *p)
-{
 	pthread_mutex_lock(&p->table->lock);
 	if (p->table->end == 0)
 	{
@@ -75,8 +79,8 @@ void	*life_style(void *ptr)
 	t_philo	*p;
 
 	p = (t_philo *)ptr;
-	if (one_philo(p) == 1)
-		return (NULL);
+	if (p->table->n_philo == 1)
+		return (one_philo(p));
 	if (p->id % 2 == 0)
 		usleep(1000);
 	while (1)
@@ -90,8 +94,7 @@ void	*life_style(void *ptr)
 		else
 			printf(THINK, (get_time() - p->table->time_start), p->id);
 		pthread_mutex_unlock(&p->table->lock);
-		philo_eating(p);
-		philo_sleeping(p);
+		philo_eating_sleeping(p);
 	}
 	return (NULL);
 }

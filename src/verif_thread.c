@@ -6,7 +6,7 @@
 /*   By: rothiery <rothiery@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 11:44:10 by rothiery          #+#    #+#             */
-/*   Updated: 2024/11/21 15:54:17 by rothiery         ###   ########.fr       */
+/*   Updated: 2024/11/22 10:38:16 by rothiery         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	*death(void *ptr)
 			if (get_time() - global->p[i].last_eat > global->table.t_t_die)
 			{
 				global->table.end = 1;
-				printf(DEAD, (get_time() - global->table.time_start), i);
+				printf(DEAD, (get_time() - global->table.time_start), i + 1);
 				pthread_mutex_unlock(&global->table.lock);
 				return (NULL);
 			}
@@ -53,7 +53,7 @@ void	*death(void *ptr)
 		if (ate(global) == 0)
 			return (NULL);
 		pthread_mutex_unlock(&global->table.lock);
-		usleep(20);
+		usleep(100);
 	}
 	return (NULL);
 }

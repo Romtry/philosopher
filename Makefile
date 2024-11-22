@@ -6,11 +6,13 @@
 #    By: rothiery <rothiery@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/10 13:44:10 by rothiery          #+#    #+#              #
-#    Updated: 2024/11/21 15:58:07 by rothiery         ###   ########.fr        #
+#    Updated: 2024/11/22 13:50:03 by rothiery         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME=	philosopher
+
+ARG="";
 
 SRC= 	src/main.c	src/philo_utils.c	src/philo_thread.c		\
 		src/init.c	src/verif_thread.c							\
@@ -28,6 +30,7 @@ BLINK = \033[6m
 
 ORANGE = \033[38;5;216m
 DARKBLUE = \033[38;5;21m
+LIGHT_RED = \033[38;5;196m
 RED = \033[38;5;130m
 DARK_RED = \033[38;5;88m
 GREEN = \033[38;5;85m
@@ -70,9 +73,25 @@ fclean:	clean
 re:	fclean all
 
 testos : re
-	@rm -rf ${NAME}.log
-	@./${NAME} 5 1000 100 100 20 > ${NAME}.log
-# 	./${NAME} args > ${NAME}.log
+	@./${NAME} ${ARG} > ${NAME}.log							\
+	&& echo "${GREEN}${GRAS}[→] Check ${NAME}.log"			\
+	|| {													\
+		ret=$$?;												\
+		if [ $$ret -eq 1 ]; then								\
+			echo "${LIGHT_RED}${GRAS}Wrong number of args need 4 or 5";				\
+		elif [ $$ret -eq 2 ]; then								\
+			echo "${LIGHT_RED}${GRAS}Wrong args: must be higher than 60 except for n_philo"; \
+		else													\
+			echo "${LIGHT_RED}${GRAS}Need less than 200 philo"; \
+		fi														\
+	}
+
 
 .PHONY:		all bonus clean fclean re
 
+
+# 1 800 200 200	dead
+# 5 800 200 200	imortel
+# 5 800 200 200 7	stop
+# 4 410 200 200	immortel
+# 4 310 200 200	dead

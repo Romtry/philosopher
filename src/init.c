@@ -6,7 +6,7 @@
 /*   By: rothiery <rothiery@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 11:40:44 by rothiery          #+#    #+#             */
-/*   Updated: 2024/11/21 15:35:19 by rothiery         ###   ########.fr       */
+/*   Updated: 2024/11/22 12:50:23 by rothiery         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,19 @@ void	struct_init(t_global *global)
 	}
 }
 
+void	destroy_mutex(t_global *global)
+{
+	unsigned int	i;
+
+	i = 0;
+	while (i < global->table.n_philo)
+	{
+		i++;
+		pthread_mutex_destroy(&global->p[i].forkl);
+	}
+	pthread_mutex_destroy(&global->table.lock);
+}
+
 void	thread_init(t_global *global)
 {
 	unsigned long	i;
@@ -62,12 +75,15 @@ void	thread_init(t_global *global)
 		pthread_create(&global->p[i].thread, NULL, &life_style, &global->p[i]);
 		i++;
 	}
-	pthread_create(&death_t, NULL, &death, global);
+	if (global->table.n_philo > 1)
+		pthread_create(&death_t, NULL, &death, global);
 	i = 0;
 	while (i < global->table.n_philo)
 	{
 		pthread_join(global->p[i].thread, NULL);
 		i++;
 	}
-	pthread_join(death_t, NULL);
+	if (global->table.n_philo > 1)
+		pthread_join(death_t, NULL);
+	destroy_mutex(global);
 }
