@@ -6,7 +6,7 @@
 /*   By: rothiery <rothiery@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 11:40:44 by rothiery          #+#    #+#             */
-/*   Updated: 2024/11/22 12:50:23 by rothiery         ###   ########.fr       */
+/*   Updated: 2024/12/09 09:37:40 by rothiery         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,8 @@ void	destroy_mutex(t_global *global)
 	i = 0;
 	while (i < global->table.n_philo)
 	{
-		i++;
 		pthread_mutex_destroy(&global->p[i].forkl);
+		i++;
 	}
 	pthread_mutex_destroy(&global->table.lock);
 }
