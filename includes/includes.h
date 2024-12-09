@@ -6,7 +6,7 @@
 /*   By: rothiery <rothiery@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 13:51:37 by rothiery          #+#    #+#             */
-/*   Updated: 2024/11/21 15:53:31 by rothiery         ###   ########.fr       */
+/*   Updated: 2024/12/09 16:00:20 by rothiery         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <pthread.h>
 # include <stdio.h>
 # include <sys/time.h>
+# include "ft_printf.h"
 
 # define FORK	"%lu %u has taken a fork\n"
 # define EAT	"%lu %u is eating\n"

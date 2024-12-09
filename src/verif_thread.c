@@ -6,7 +6,7 @@
 /*   By: rothiery <rothiery@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 11:44:10 by rothiery          #+#    #+#             */
-/*   Updated: 2024/12/09 09:44:49 by rothiery         ###   ########.fr       */
+/*   Updated: 2024/12/09 16:25:05 by rothiery         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	*death(void *ptr)
 		{
 			if (get_time() - global->p[i].last_eat > global->table.t_t_die)
 			{
+				printf("philo : %d\nlast eat : %lu\n", i + 1, get_time() - global->p[i].last_eat);
 				global->table.end = 1;
 				printf(DEAD, (get_time() - global->table.time_start), i + 1);
 				pthread_mutex_unlock(&global->table.lock);
