@@ -6,7 +6,7 @@
 /*   By: rothiery <rothiery@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 11:30:36 by rothiery          #+#    #+#             */
-/*   Updated: 2024/12/09 16:58:02 by rothiery         ###   ########.fr       */
+/*   Updated: 2024/12/11 15:10:41 by rothiery         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ int	main(int argc, char **argv)
 	t_global	global;
 
 	freopen("l.log", "w", stdout);
-
 	parsing(argc, argv, &global);
 	thread_init(&global);
 }

@@ -6,7 +6,7 @@
 /*   By: rothiery <rothiery@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 13:02:50 by rothiery          #+#    #+#             */
-/*   Updated: 2024/12/09 16:56:58 by rothiery         ###   ########.fr       */
+/*   Updated: 2024/12/11 15:09:43 by rothiery         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,13 @@ void	*one_philo(t_philo *p)
 
 void	mutex_fork2(t_philo *p)
 {
-	pthread_mutex_lock(&p->table->lock);
 	pthread_mutex_lock(p->forkr);
+	pthread_mutex_lock(&p->table->lock);
 	if (p->table->end == 0)
 		printf(FORK, (get_time() - p->table->time_start), p->id);
+	pthread_mutex_unlock(&p->table->lock);
 	pthread_mutex_lock(&p->forkl);
+	pthread_mutex_lock(&p->table->lock);
 	if (p->table->end == 0)
 		printf(FORK, (get_time() - p->table->time_start), p->id);
 	pthread_mutex_unlock(&p->table->lock);
@@ -36,11 +38,13 @@ void	mutex_fork_in_order(t_philo *p)
 {
 	if (&p->forkl < p->forkr)
 	{
-		pthread_mutex_lock(&p->table->lock);
 		pthread_mutex_lock(&p->forkl);
+		pthread_mutex_lock(&p->table->lock);
 		if (p->table->end == 0)
 			printf(FORK, (get_time() - p->table->time_start), p->id);
+		pthread_mutex_unlock(&p->table->lock);
 		pthread_mutex_lock(p->forkr);
+		pthread_mutex_lock(&p->table->lock);
 		if (p->table->end == 0)
 			printf(FORK, (get_time() - p->table->time_start), p->id);
 		pthread_mutex_unlock(&p->table->lock);
@@ -57,11 +61,11 @@ void	philo_eating_sleeping(t_philo *p)
 		printf(EAT, (get_time() - p->table->time_start), p->id);
 	p->last_eat = get_time();
 	p->eaten++;
+	pthread_mutex_unlock(&p->table->lock);
+	ft_usleep(p->table->t_eat + get_time(), p);
 	pthread_mutex_unlock(p->forkr);
 	pthread_mutex_unlock(&p->forkl);
-	pthread_mutex_unlock(&p->table->lock);
 	pthread_mutex_lock(&p->table->lock);
-	ft_usleep(p->table->t_eat + get_time(), p);
 	if (p->table->end == 0)
 		printf(SLEEP, (get_time() - p->table->time_start), p->id);
 	pthread_mutex_unlock(&p->table->lock);
@@ -87,7 +91,10 @@ void	*life_style(void *ptr)
 		}
 		pthread_mutex_unlock(&p->table->lock);
 		philo_eating_sleeping(p);
-		printf(THINK, (get_time() - p->table->time_start), p->id);
+		if (p->table->end == 0)
+		{
+			printf(THINK, (get_time() - p->table->time_start), p->id);
+		}
 	}
 	return (NULL);
 }
