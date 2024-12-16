@@ -6,7 +6,7 @@
 #    By: rothiery <rothiery@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/10 13:44:10 by rothiery          #+#    #+#              #
-#    Updated: 2024/12/09 16:13:24 by rothiery         ###   ########.fr        #
+#    Updated: 2024/12/16 14:03:02 by rothiery         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,7 +46,7 @@ REST = ${shell expr 23 - ${BAR}}
 all:	${NAME}
 
 ${NAME}:		${OFILES}
-	@${CC} ${CFLAGS} ${OFILES} src/libftprintf.a -o ${NAME}
+	@${CC} ${CFLAGS} ${OFILES} -o ${NAME}
 	@echo "\n\n${GREEN}[✓] - ${_GREEN}${NAME}${GREEN} Successfully Compiled!${RESET}"
 
 obj/%.o:%.c
