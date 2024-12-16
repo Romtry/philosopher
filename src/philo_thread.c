@@ -6,7 +6,7 @@
 /*   By: rothiery <rothiery@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 13:02:50 by rothiery          #+#    #+#             */
-/*   Updated: 2024/12/11 15:09:43 by rothiery         ###   ########.fr       */
+/*   Updated: 2024/12/16 10:18:49 by rothiery         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,10 +91,12 @@ void	*life_style(void *ptr)
 		}
 		pthread_mutex_unlock(&p->table->lock);
 		philo_eating_sleeping(p);
+		pthread_mutex_lock(&p->table->lock);
 		if (p->table->end == 0)
 		{
 			printf(THINK, (get_time() - p->table->time_start), p->id);
 		}
+		pthread_mutex_unlock(&p->table->lock);
 	}
 	return (NULL);
 }

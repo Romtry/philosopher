@@ -6,27 +6,29 @@
 /*   By: rothiery <rothiery@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 11:30:36 by rothiery          #+#    #+#             */
-/*   Updated: 2024/12/11 15:10:41 by rothiery         ###   ########.fr       */
+/*   Updated: 2024/12/16 10:42:25 by rothiery         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes.h"
 
+#define C "\e[38;5;196m"
+
 void	print_error(unsigned int n)
 {
 	if (n == 0)
 	{
-		write(1, "\033[38;5;196mWrong number of args\n", 32);
+		write(1, C"Wrong number of args\e[0m\n", 36);
 		exit(1);
 	}
 	else if (n == 1)
 	{
-		write(1, "\e[38;5;196mArgs must be higher than 60 exept n_philo\n", 53);
+		write(1, C"Args must be higher than 60 exept n_philo\e[0m\n", 57);
 		exit(2);
 	}
 	else if (n == 2)
 	{
-		write(1, "\033[38;5;196mNeed less than 200 philo\n", 25);
+		write(1, C"Need less than 200 philo\e[0m\n", 40);
 		exit(3);
 	}
 }
@@ -46,7 +48,6 @@ int	main(int argc, char **argv)
 {
 	t_global	global;
 
-	freopen("l.log", "w", stdout);
 	parsing(argc, argv, &global);
 	thread_init(&global);
 }
